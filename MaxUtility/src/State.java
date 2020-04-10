@@ -2,30 +2,34 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 
-public class State<T> implements Comparable<State<T>>{
-    private State<T> parent;
-    private List<State<T>> children = new ArrayList<State<T>>();
+public class State implements Comparable<State>{
     
-    private int util;
+	private State parent;
+    private List<State> children;
+    
+    private int[] utils;
     private int maxExpectedUtil;
-    private T value = null;
+    private Action action = null;
 
     /**
-     * Creates an instance of state with a starting value.
-     * @param value is what the state's starting value is.
+     * Creates an instance of state.
+     * @param action what action results by moving into this state.
+     * @param utils the utility from the action.
      */
-    public State(T value, int util) {
-        this.value = value;
-        this.util = util;
+    public State(Action action, int[] utils) {
+        this.action = action;
+        this.utils = utils;
         maxExpectedUtil = Integer.MIN_VALUE;
+        children = new ArrayList<>();
     }
 
     /**
      * Returns all states that are children of this state.
      * @return
      */
-    public List<State<T>> getChildren() {
+    public List<State> getChildren() {
         return children;
     }
 
@@ -33,7 +37,7 @@ public class State<T> implements Comparable<State<T>>{
      * Adds a child to the current state.
      * @param child
      */
-    public void addChild(State<T> child) {
+    public void addChild(State child) {
         this.children.add(child);
     }
     
@@ -41,7 +45,7 @@ public class State<T> implements Comparable<State<T>>{
      * Returns the parent of this state.
      * @return
      */
-    public State<T> getParent() {
+    public State getParent() {
     	return parent;
     }
     
@@ -49,24 +53,32 @@ public class State<T> implements Comparable<State<T>>{
      * Sets the parent of this state.
      * @param parent
      */
-    public void setParent(State<T> parent) {
+    public void setParent(State parent) {
     	this.parent = parent; 
     }
     
     /**
-     * Returns the  utility for this state.
+     * Returns the  utilities for this state.
      * @return
      */
-    public int getUtility () {
-    	return util;
+    public int[] getUtilities () {
+    	return utils;
     }
     
     /**
-     * Sets the utility for this state.
+     * Returns the summation of all utilities.
+     * @return
+     */
+    public int getUtilitySum () {
+    	return IntStream.of(utils).sum();
+    }
+    
+    /**
+     * Sets the utilities for this state.
      * @param utility
      */
-    public void setUtility (int util) {
-    	this.util = util;
+    public void setUtility (int[] utils) {
+    	this.utils = utils;
     }
     
     /**
@@ -86,19 +98,19 @@ public class State<T> implements Comparable<State<T>>{
     }
 
     /**
-     * Returns the value of this state.
+     * Returns the action of this state.
      * @return
      */
-    public T getValue() {
-        return this.value;
+    public Action getAction() {
+        return this.action;
     }
 
     /**
-     * Sets the value of this state.
+     * Sets the action of this state.
      * @param value
      */
-    public void setValue(T value) {
-        this.value = value;
+    public void setAction(Action value) {
+        this.action = value;
     }
 
     /**
@@ -109,13 +121,21 @@ public class State<T> implements Comparable<State<T>>{
         return this.children.size() == 0;
     }
 
-	public Set<State<T>> toSet () {
-		Set<State<T>> set = new HashSet<State<T>>();
+    /**
+     * Converts the state and all children into an unordered set.
+     * @return
+     */
+	public Set<State> toSet () {
+		Set<State> set = new HashSet<>();
 		toSet(set);
 		return set;
 	}
 	
-	private void toSet (Set<State<T>> set) {
+	/**
+     * Converts the state and all children into an unordered set.
+	 * @param set
+	 */
+	private void toSet (Set<State> set) {
 		for (int i = 0; i < children.size(); i++) {
 			children.get(i).toSet(set);
 		}
@@ -123,7 +143,7 @@ public class State<T> implements Comparable<State<T>>{
 	}
 
 	@Override
-	public int compareTo(State<T> o) {
+	public int compareTo(State o) {
 		if (o.maxExpectedUtil > this.maxExpectedUtil) return 1;
 		if (o.maxExpectedUtil < this.maxExpectedUtil) return -1;
 		return 0;

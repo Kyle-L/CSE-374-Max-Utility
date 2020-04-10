@@ -1,41 +1,59 @@
 import java.util.*; 
-import java.lang.*; 
-import java.io.*; 
 
-public class MaxUtilityPath<T>{
+public class MaxUtilityPath{
 
-	public void Start (State<T> root) {
-		root.setExpectedUtility(0);
-		PriorityQueue<State<T>> queue = new PriorityQueue<>(root.toSet());
-		Set<State<T>> set = new HashSet<State<T>>();
+	public static List<State> Start (State root) {
+		Set<State> set = new HashSet<State>();
+		PriorityQueue<State> queue = new PriorityQueue<>(root.toSet());
+
+		// Initialization.
+		initialize(root, set);
+			
+		// Iterate through queue until empty.
 		while (!queue.isEmpty()) {
-			State<T> m = queue.poll();
+			State m = queue.poll();
 			set.add(m);
-			for (State<T> child : m.getChildren()) {
+			
+			// Relaxation Step.
+			for (State child : m.getChildren()) {
 				relax(m, child);
 			}
 		}
-		MaxPath(set);
+		
+		// Return max path.
+		return getMaxPath(set);
 	}
 	
-	private void relax (State<T> m, State<T> s) {
-		if (s.getExpectedUtility() < m.getExpectedUtility() + s.getUtility()) {
-			s.setExpectedUtility(m.getExpectedUtility() + s.getUtility());
+	private static void initialize(State root, Set<State> set) {
+		root.setExpectedUtility(0);
+		for (State state : set) {
+			state.setExpectedUtility(Integer.MIN_VALUE);
+			state.setParent(null);
+		}
+	}
+	
+	private static void relax (State m, State s) {
+		if (s.getExpectedUtility() < m.getExpectedUtility() + s.getUtilitySum()) {
+			s.setExpectedUtility(m.getExpectedUtility() + s.getUtilitySum());
 			s.setParent(m);
 		}
 	}
 	
-	private void MaxPath (Set<State<T>> nodes) {
-		State<T> max = new State<T>(null, Integer.MIN_VALUE);
-		for (State<T> node : nodes) {
+	private static List<State> getMaxPath (Set<State> nodes) {
+		List<State> orderedSet = new ArrayList<State>();
+		int[] empty = { };
+		State max = new State(null, empty);
+		for (State node : nodes) {
 			if (node.isLeaf()) {
 				max = (node.getExpectedUtility() > max.getExpectedUtility()) ? node : max;
 			}
 		}
 		while (max != null) {
-			System.out.println(max.getValue());
+			orderedSet.add(0, max);
 			max = max.getParent();
 		}
+
+		return orderedSet;
 	}
 	
 }
