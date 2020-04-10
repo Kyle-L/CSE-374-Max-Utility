@@ -19,4 +19,4 @@ This is the repository for the development of an algorithm to maximizes the expe
 
 <a name="license"></a>
 ## License
-This project has not yet been licensed.
+This project has been licensed under Apache License 2.0.
