@@ -4,27 +4,38 @@ public class main {
 	public static void main (String[] args) {
 		State root = buildTree();
 				
-		List<State> path = MaxUtilityPath.Start(root);
+		List<State> path = MaxUtilityPath.findMaxUtilityPath(root);
+		
+		System.out.println("With the max utility determined. " +  	
+						   "The actions that should be taken are:");	
 		
 		for (State state : path) {
 			state.getAction().Go();
 		}
+		
+		System.out.println("\nThis actions are taken by visiting:");
+		
+		for (State state : path) {
+			System.out.println(state.getStateName());
+		}
+		
+		System.out.println("\nThe resulting utility is " + path.get(path.size() - 1).getExpectedUtility() + ".");
 	}
 	
 	public static State buildTree () {
-		State parentState = new State(new StringAction("0"), new int[] {0}); 
+		State parentState = new State("Root State", new StringAction("0"), new int[] {0}); 
 		
-		State childState1 = new State(new StringAction("1"), new int[] {2});
-		State chilState2 = new State(new StringAction("2"), new int[] {4});
-		State childState3 = new State(new StringAction("3"), new int[] {3});
+		State childState1 = new State("State 1", new StringAction("1"), new int[] {2});
+		State chilState2 = new State("State 2", new StringAction("2"), new int[] {4});
+		State childState3 = new State("State 3", new StringAction("3"), new int[] {3});
 		
 		parentState.addChild(childState1);
 		parentState.addChild(chilState2);
 		parentState.addChild(childState3);		
 		
-		State childState4 = new State(new StringAction("4"), new int[] {4});
-		State childState5 = new State(new StringAction("5"), new int[] {3});
-		State childState6 = new State(new StringAction("6"), new int[] {2}); 
+		State childState4 = new State("State 4", new StringAction("4"), new int[] {4});
+		State childState5 = new State("State 5", new StringAction("5"), new int[] {3});
+		State childState6 = new State("State 6", new StringAction("6"), new int[] {2}); 
 
 		childState1.addChild(childState4);
 		childState1.addChild(childState5);

@@ -6,24 +6,42 @@ import java.util.stream.IntStream;
 
 public class State implements Comparable<State>{
     
+	private String stateName;
 	private State parent;
     private List<State> children;
     
-    private int[] utils;
+    private int[] utilities;
     private int maxExpectedUtil;
     private Action action = null;
 
     /**
      * Creates an instance of state.
      * @param action what action results by moving into this state.
-     * @param utils the utility from the action.
+     * @param utilities the utilities gained from an action.
      */
-    public State(Action action, int[] utils) {
+    public State(String stateName, Action action, int[] utilities) {
+    	this.setStateName(stateName);
         this.action = action;
-        this.utils = utils;
+        this.utilities = utilities;
         maxExpectedUtil = Integer.MIN_VALUE;
         children = new ArrayList<>();
     }
+    
+	/**
+	 * Gets the state's name.
+	 * @return
+	 */
+	public String getStateName() {
+		return stateName;
+	}
+
+	/**
+	 * Sets the state's name.
+	 * @param stateName
+	 */
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
 
     /**
      * Returns all states that are children of this state.
@@ -62,7 +80,7 @@ public class State implements Comparable<State>{
      * @return
      */
     public int[] getUtilities () {
-    	return utils;
+    	return utilities;
     }
     
     /**
@@ -70,7 +88,7 @@ public class State implements Comparable<State>{
      * @return
      */
     public int getUtilitySum () {
-    	return IntStream.of(utils).sum();
+    	return IntStream.of(utilities).sum();
     }
     
     /**
@@ -78,7 +96,7 @@ public class State implements Comparable<State>{
      * @param utility
      */
     public void setUtility (int[] utils) {
-    	this.utils = utils;
+    	this.utilities = utils;
     }
     
     /**
@@ -148,4 +166,5 @@ public class State implements Comparable<State>{
 		if (o.maxExpectedUtil < this.maxExpectedUtil) return -1;
 		return 0;
 	}
+
 }
