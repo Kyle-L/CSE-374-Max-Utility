@@ -27,6 +27,18 @@ public class State implements Comparable<State>{
         children = new ArrayList<>();
     }
     
+    /**
+     * Copies another instance of state onto the current instance (only copies the name and action). 
+     * @param copy - The state to be copied from.
+     */
+    public State(State copy, int[] utilities) {
+    	this.setStateName(copy.getStateName());
+    	this.setAction(copy.getAction());
+    	this.utilities = utilities; 
+    	maxExpectedUtil = Integer.MIN_VALUE;
+    	children = new ArrayList<>();
+    }
+    
 	/**
 	 * Gets the state's name.
 	 * @return
@@ -167,4 +179,18 @@ public class State implements Comparable<State>{
 		return 0;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		
+		if (o == this)
+			return true;
+		
+		if(!(o instanceof State))
+			return false;
+		
+		State s = (State) o;
+		
+		return s.getStateName().equals(this.getStateName());
+	}
+	
 }
