@@ -1,9 +1,11 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 
+/**
+ * An implementation of the state used in the Find Max Utility Path algorithm.
+ * @author Kyle Lierer
+ *
+ */
 public class State implements Comparable<State>{
     
 	private String stateName;
@@ -23,8 +25,8 @@ public class State implements Comparable<State>{
     	this.setStateName(stateName);
         this.action = action;
         this.utilities = utilities;
-        maxExpectedUtil = Integer.MIN_VALUE;
-        children = new ArrayList<>();
+        this.maxExpectedUtil = Integer.MIN_VALUE;
+        this.children = new ArrayList<>();
     }
     
     /**
@@ -34,9 +36,9 @@ public class State implements Comparable<State>{
     public State(State copy, int[] utilities) {
     	this.setStateName(copy.getStateName());
     	this.setAction(copy.getAction());
-    	this.utilities = utilities; 
-    	maxExpectedUtil = Integer.MIN_VALUE;
-    	children = new ArrayList<>();
+    	this.utilities = utilities.clone(); 
+    	this.maxExpectedUtil = Integer.MIN_VALUE;
+    	this.children = new ArrayList<>();
     }
     
 	/**
@@ -177,20 +179,6 @@ public class State implements Comparable<State>{
 		if (o.maxExpectedUtil > this.maxExpectedUtil) return 1;
 		if (o.maxExpectedUtil < this.maxExpectedUtil) return -1;
 		return 0;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		
-		if (o == this)
-			return true;
-		
-		if(!(o instanceof State))
-			return false;
-		
-		State s = (State) o;
-		
-		return s.getStateName().equals(this.getStateName());
 	}
 	
 }
