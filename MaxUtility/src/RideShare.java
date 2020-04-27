@@ -1,27 +1,34 @@
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 import javax.tools.DocumentationTool.Location;
 
+/**
+ * 
+ * @author Matthew Coe
+ *
+ */
 public class RideShare {
-
-	// The first state/location of the driver
+	
+	// Generate's the random numbers used in the utility arrays.
+	private Random randomGenerator;
+	
+	// The first state/location of the driver.
 	private State initialState;
 
-	// Number of locations that need to be reached (this number of locations will be generated for testing)
+	// Number of locations that need to be reached (this number of locations will be generated for testing).
 	private int locationNumber;
-
-	// ArrayList of all location states
+	
+	// ArrayList of all location states.
 	private ArrayList<State> locations = new ArrayList<State>();
 
 	// Number of utilities for each state. 
 	private int utilNumber;
 
-	// Values for upper/lower bound for the utility value
+	// Values for upper/lower bound for the utility value.
 	private int utilLowerBound;
 	private int utilUpperBound;
 	
-	// String representation of the paths in the Ride share utility tree
+	// String representation of the paths in the Ride share utility tree.
 	String tree = "";
 
 	/**
@@ -32,15 +39,31 @@ public class RideShare {
 	 * @param upper - Upper bound for random utility values. 
 	 */
 	public RideShare(int locationNum, int numUtil, int lower, int upper) {
-		locationNumber = locationNum;
-		utilNumber = numUtil;
-
-		// Checks that the utility value range is valid
-		if(upper < lower)
+		this(locationNum, numUtil, lower, upper, 1);
+	}
+	
+	/**
+	 * Constructs a new RideShare object.
+	 * @param locationNum - Number of locations (states) generated for the tree.
+	 * @param numUtil - Number of utilities for a given state. 
+	 * @param lower - Lower bound for random utility values.
+	 * @param upper - Upper bound for random utility values.
+	 * @param seed - The seed used for the randomly generate utility values.
+	 */
+	public RideShare(int locationNum, int numUtil, int lower, int upper, int seed) {
+		randomGenerator = new Random();
+		randomGenerator.setSeed(seed);
+		
+		this.locationNumber = locationNum;
+		this.utilNumber = numUtil;
+		
+		// Checks that the utility value range is valid.
+		if(upper < lower) {
 			throw new IllegalArgumentException("The lower bound cannot be greater than the upper bound");
-
-		utilLowerBound = lower;
-		utilUpperBound = upper;	
+		}
+		
+		this.utilLowerBound = lower;
+		this.utilUpperBound = upper;	
 		initialState = new State("Initial State", new StringAction("Initial Location"), new int [] {0});  
 		generateRideShareUtilityTree();
 	}
@@ -51,18 +74,18 @@ public class RideShare {
 	 */
 	public void generateRideShareUtilityTree() {
 
-		// Generates the ride share locations
+		// Generates the ride share locations.
 		generateRideShareLocations();
 
 		for(int i = 0; i < locations.size(); i++) {
 			int [] values = generateUtilArray();
 
-			// Setting child and parent states 
+			// Setting child and parent states.
 			State childState = new State(locations.get(i), values);
 			childState.setParent(initialState);
 			initialState.addChild(childState);
 			
-			// Recursively sets child and parent states
+			// Recursively sets child and parent states.
 			generateRideShareUtilityTree(locations, childState);
 			
 		}
@@ -132,7 +155,7 @@ public class RideShare {
 
 		// Adds random utilities to the list (from utilLowerBound to utilUpperBound)
 		for(int i = 0; i < util.length; i++)
-			util[i] = (int)(Math.random() * (utilUpperBound - utilLowerBound) + 1) + utilLowerBound;
+			util[i] = randomGenerator.nextInt(utilUpperBound - utilLowerBound) + utilLowerBound;
 
 		return util;
 	}
@@ -169,7 +192,6 @@ public class RideShare {
 		
 		
 	}
-
 
 	public State getInitialState() {
 		return initialState;

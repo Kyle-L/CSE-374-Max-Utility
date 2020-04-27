@@ -16,10 +16,11 @@ public class MaxUtilityPath{
 	 */
 	public static List<State> findMaxUtilityPath (State root) {
 		Set<State> visitedSet = new HashSet<State>();
-		PriorityQueue<State> queue = new PriorityQueue<>(root.toSet());
-
+		
 		// Initialization.
 		initialize(root, visitedSet);
+		
+		PriorityQueue<State> queue = new PriorityQueue<>(root.toSet());
 			
 		// Iterate through queue until empty.
 		while (!queue.isEmpty()) {
@@ -31,7 +32,14 @@ public class MaxUtilityPath{
 			
 			// Relax the children states based on m
 			for (State child : m.getChildren()) {
+				// Remove the child from the queue.
+				queue.remove(child);
+				
+				// Relax the child.
 				relax(m, child);
+				
+				// Add the child back into the queue.
+				queue.add(child);
 			}
 		}
 		
@@ -47,7 +55,7 @@ public class MaxUtilityPath{
 	 */
 	private static void initialize(State root, Set<State> set) {
 		for (State state : set) {
-			state.setExpectedUtility(Integer.MIN_VALUE);
+			state.setExpectedUtility(-1000);
 			state.setParent(null);
 		}
 		root.setExpectedUtility(0);
