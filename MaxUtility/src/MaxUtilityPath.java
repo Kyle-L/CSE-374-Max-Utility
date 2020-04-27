@@ -1,5 +1,10 @@
 import java.util.*; 
 
+/**
+ * An implementation the Find Max Utility Path algorithm.
+ * @author Kyle Lierer
+ *
+ */
 public class MaxUtilityPath{
 
 	/**
@@ -12,8 +17,7 @@ public class MaxUtilityPath{
 	public static List<State> findMaxUtilityPath (State root) {
 		Set<State> visitedSet = new HashSet<State>();
 		PriorityQueue<State> queue = new PriorityQueue<>(root.toSet());
-		
-		
+
 		// Initialization.
 		initialize(root, visitedSet);
 			
