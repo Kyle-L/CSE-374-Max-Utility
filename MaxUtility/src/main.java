@@ -24,32 +24,26 @@ public class main {
 		 */
 
 		// =================================================================================================================  Testing Ride Share Class
-		RideShare driverOne = new RideShare(2, 1, -10, -1);
 		
+		// Varibles for measuring execution time for finding the max utility.
+		long start = 0;
+		long end = 0;
+		
+		// Creates a RideShare object that has 2 possible locations, with 1 utility assigned to each location. Additionally, the utilities will range from -5 to 5. 
+		RideShare driverOne = new RideShare(2, 1, -5, 5);
+		
+		System.out.println("============================================================================================");
+		System.out.println("A ride-share driver must reach two locations. What path would maximize the driver's utility?");
+		System.out.println("============================================================================================");
+		System.out.println("Possible paths for the driver:\n"+driverOne);
 
-		System.out.println("Path 1");
-		System.out.println((driverOne.getInitialState().getChildren().get(0).getStateName()));
-		int [] u = (driverOne.getInitialState().getChildren().get(0).getUtilities());
-		System.out.println(u[0]);
-		
-		System.out.println((driverOne.getInitialState().getChildren().get(0).getChildren().get(0).getStateName()));
-		u = (driverOne.getInitialState().getChildren().get(0).getChildren().get(0).getUtilities());
-		System.out.println(u[0]);
-
-		
-		System.out.println("\nPath 2");
-		System.out.println((driverOne.getInitialState().getChildren().get(1).getStateName()));
-		u = (driverOne.getInitialState().getChildren().get(1).getUtilities());
-		System.out.println(u[0]);
-		
-		System.out.println((driverOne.getInitialState().getChildren().get(1).getChildren().get(0).getStateName()));
-		u = (driverOne.getInitialState().getChildren().get(1).getChildren().get(0).getUtilities());
-		System.out.println(u[0]);
-		System.out.println();
-		
+		// Finding max-utility path
+		start = System.nanoTime();
 		List<State> path = MaxUtilityPath.findMaxUtilityPath(driverOne.getInitialState());
-
-		System.out.println("The actions that should be taken are:");	
+		end = System.nanoTime();
+		
+		System.out.println("Time taken to find max utility path:\nNanoseconds = "+(end-start)+"   |   Milliseconds = "+((double)(end-start)/1000000)+"\n");
+		System.out.println("Actions taken by the first driver to maximize utility:");	
 
 		for (State state : path) {
 			state.getAction().Go();
@@ -58,6 +52,12 @@ public class main {
 		
 	}
 
+	
+	
+	
+	
+	
+	
 	public static State buildTree () {
 		State parentState = new State("Root State", new StringAction("0"), new int[] {0}); 
 
@@ -87,5 +87,5 @@ public class main {
 
 		return parentState;
 	}
-
+	
 }
