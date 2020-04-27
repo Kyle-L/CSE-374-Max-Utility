@@ -20,7 +20,9 @@ public class RideShare {
 	// Values for upper/lower bound for the utility value
 	private int utilLowerBound;
 	private int utilUpperBound;
-
+	
+	// String representation of the paths in the Ride share utility tree
+	String tree = "";
 
 	/**
 	 * Constructs a new RideShare object.
@@ -51,24 +53,36 @@ public class RideShare {
 
 		// Generates the ride share locations
 		generateRideShareLocations();
-		
+
 		for(int i = 0; i < locations.size(); i++) {
-			State childState = new State(locations.get(i), generateUtilArray());
+			int [] values = generateUtilArray();
+
+			// Setting child and parent states 
+			State childState = new State(locations.get(i), values);
+			childState.setParent(initialState);
 			initialState.addChild(childState);
-			generateRideShareUtilityTree(locations, childState);
-		}
 			
+			// Recursively sets child and parent states
+			generateRideShareUtilityTree(locations, childState);
+			
+		}
+
 
 	}
-	
+
+
+	/**
+	 * Recursive helper method to generateRideShareUtilityTree(). 
+	 * @param remaining - List of remaining locations that need to be visited. 
+	 * @param parentState - State that will be used as the parent state. 
+	 */
 	public void generateRideShareUtilityTree(ArrayList<State> remaining, State parentState){
-		
+
 		// Base Case (when leaf is reached)
 		if(remaining.size() == 1) {
-			// System.out.println(parentState.getStateName()+"\n");
 			return;
 		}
-			
+
 		// Makes a copy of remaining (excluding the previous state) 
 		ArrayList<State> updatedRemaining = new ArrayList<State>();
 		for(State s : remaining) {
@@ -76,14 +90,19 @@ public class RideShare {
 				continue;
 			updatedRemaining.add(s);
 		}
-		
+
 		for(int i = 0; i < updatedRemaining.size(); i++) {
-			State childState = new State(updatedRemaining.get(i), generateUtilArray());
+			int [] values = generateUtilArray();
+
+			// Setting child and parent states
+			State childState = new State(updatedRemaining.get(i), values);
+			childState.setParent(parentState);
 			parentState.addChild(childState);
-			generateRideShareUtilityTree(updatedRemaining, childState);
-			// System.out.println(parentState.getStateName()+"\nChildNum: "+childState.getChildren().size()+"\n");
-		}
 			
+			// Recursively sets child and parent states
+			generateRideShareUtilityTree(updatedRemaining, childState);
+		}
+
 	}
 
 
@@ -118,9 +137,43 @@ public class RideShare {
 		return util;
 	}
 
+	
+	/** 
+	 * Returns a string representation of all paths in the Ride Share Tree
+	 */
+	@Override
+	public String toString() {
+		stringBuilder(initialState, "");
+		return tree;
+	}
+	
+	
+	public void stringBuilder(State current, String path) {
+		
+		if(current.isLeaf()) {
+			tree += path+"\n";	
+			return;
+		}
+		
+		State child = null;
+		
+		for(int i = 0; i < current.getChildren().size(); i++) {
+			child = current.getChildren().get(i);
+			String info = "["+child.getStateName()+"|Utility Sum: "+child.getUtilitySum()+"]";
+			
+			if(!child.isLeaf())
+				info += "--->";
+			
+			stringBuilder(child, new String(path+info));	
+		}
+		
+		
+	}
+
 
 	public State getInitialState() {
 		return initialState;
 	}
+
 
 }
