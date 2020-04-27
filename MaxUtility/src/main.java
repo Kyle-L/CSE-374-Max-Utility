@@ -5,6 +5,9 @@ public class main {
 		// Variables for measuring execution time for finding the max utility.
 		long start = 0;
 		long end = 0;
+		List<State> path = null;
+		
+		/*======================================= EXAMPLE 1 ===============================================*/
 		
 		System.out.println("===================================================================");
 		System.out.println("                        EXAMPLE 1 : Table 2");
@@ -14,57 +17,58 @@ public class main {
 		System.out.println("===================================================================");
 		System.out.println();
 		
+		// Builds the example tree.
 		State root = buildExampleTree();
+		
+		// Finds the max utility path and the time.
+		start = System.nanoTime();
+		path = MaxUtilityPath.findMaxUtilityPath(root);
+		end = System.nanoTime();
 
-		List<State> path = MaxUtilityPath.findMaxUtilityPath(root);
-
-		System.out.println("With the max utility path determined. " +  	
-						   "The actions that should be taken are:");	
-
-		for (State state : path) {
-			state.getAction().Go();
-		}
-
-		System.out.println("\nThis actions are taken by visiting:");
-
+		// Displays the path.
+		System.out.println("This actions are taken by visiting:");
 		for (State state : path) {
 			System.out.println(state.getStateName());
 		}
 
+		//Displays the max utility found as well as the time taken to compute that.
 		System.out.println("\nThe resulting utility is " + path.get(path.size() - 1).getExpectedUtility() + ".");
-	
+		System.out.format("This was computed in %d nanoseconds.\n\n", end-start);
+		
+		/*======================================= EXAMPLE 2 ===============================================*/
 		
 		System.out.println("===================================================================");
 		System.out.println("                        EXAMPLE 2 : Rideshare");
 		System.out.println("===================================================================");
 		System.out.println("Here is our max utility path algorithm running a randomized\n"
-						 + "rideshare example in which a driver has to visit 3 locations.");
+						 + "rideshare example in which a driver has to visit 3 locations.\n"
+						 + "A ride-share driver must reach three locations.");
 		System.out.println("===================================================================");
 		System.out.println();
 		
-		// Finding max-utility path
-		start = System.nanoTime();
+		// Builds the rideshare tree.
 		RideShare rideShareTree = buildRideShareTree(); 
+		
+		// Finds the max utility path and the time.
+		start = System.nanoTime();
 		path = MaxUtilityPath.findMaxUtilityPath(rideShareTree.getInitialState());
 		end = System.nanoTime();
 		
-		System.out.println("Time taken to find max utility path:\nNanoseconds = "+(end-start)+"   |   Milliseconds = "+((double)(end-start)/1000000)+"\n");
+		// Displays the path.
 		System.out.println("Actions taken by the first driver to maximize utility:");	
-
 		for (State state : path) {
 			state.getAction().Go();
 		}
 		
-		
+		//Displays the max utility found as well as the time taken to compute that.
+		System.out.println("\nThe resulting utility is " + path.get(path.size() - 1).getExpectedUtility() + ".");
+		System.out.format("This was computed on average in %d nanoseconds.\n\n", end-start);
 	}
 	
 	public static RideShare buildRideShareTree () {
-		// Creates a RideShare object that has 3 possible locations, with 1 utility assigned to each location. Additionally, the utilities will range from -5 to 5. 
-		RideShare rideShare = new RideShare(2, 3, 0, 10);
+		// Creates a RideShare object that has 3 possible locations, with 3 utility assigned to each location.
+		RideShare rideShare = new RideShare(3, 3, 0, 10);
 		
-		System.out.println("============================================================================================");
-		System.out.println("A ride-share driver must reach two locations. What path would maximize the driver's utility?");
-		System.out.println("============================================================================================");
 		System.out.println("Possible paths for the driver:\n" + rideShare);
 		
 		return rideShare;
