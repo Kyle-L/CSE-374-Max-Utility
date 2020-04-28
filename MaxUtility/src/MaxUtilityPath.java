@@ -15,12 +15,13 @@ public class MaxUtilityPath{
 	 * 			that should be made by an agent to maximize utility.
 	 */
 	public static List<State> findMaxUtilityPath (State root) {
+		Set<State> allNodes = root.toSet();
 		Set<State> visitedSet = new HashSet<State>();
 		
 		// Initialization.
-		initialize(root, visitedSet);
+		initialize(root, allNodes);
 		
-		PriorityQueue<State> queue = new PriorityQueue<>(root.toSet());
+		PriorityQueue<State> queue = new PriorityQueue<>(allNodes);
 			
 		// Iterate through queue until empty.
 		while (!queue.isEmpty()) {

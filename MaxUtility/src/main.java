@@ -1,5 +1,11 @@
 import java.util.List;
 
+/**
+ * Runs the max utility path algorithm on example test cases.
+ * @author Matthew Coe
+ * @author Kyle Lierer
+ *
+ */
 public class main {	
 	
 	public static void main (String[] args) {
