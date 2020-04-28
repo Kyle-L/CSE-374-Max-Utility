@@ -1,6 +1,7 @@
 import java.util.List;
 
-public class main {
+public class main {	
+	
 	public static void main (String[] args) {
 		// Variables for measuring execution time for finding the max utility.
 		long start = 0;
@@ -28,7 +29,7 @@ public class main {
 		// Displays the path.
 		System.out.println("This actions are taken by visiting:");
 		for (State state : path) {
-			System.out.println(state.getStateName());
+			state.getAction().Go();
 		}
 
 		//Displays the max utility found as well as the time taken to compute that.
@@ -47,14 +48,45 @@ public class main {
 		System.out.println();
 		
 		// Builds the rideshare tree.
-		RideShare rideShareTree = buildRideShareTree(); 
+		RideShare rideShareTree = buildRideShareTree(2, 2, 0, 10, 1); 
 		
 		// Finds the max utility path and the time.
 		start = System.nanoTime();
 		path = MaxUtilityPath.findMaxUtilityPath(rideShareTree.getInitialState());
 		end = System.nanoTime();
+
 		
-		// Displays the path.
+		// Displays the path actions.
+		System.out.println("Actions taken by the first driver to maximize utility:");	
+		for (State state : path) {
+			state.getAction().Go();
+		}
+		
+		//Displays the max utility found as well as the time taken to compute that.
+		System.out.println("\nThe resulting utility is " + path.get(path.size() - 1).getExpectedUtility() + ".");
+		System.out.format("This was computed on average in %d nanoseconds.\n\n", end-start);
+		
+/*======================================= EXAMPLE 2 ===============================================*/
+		
+		System.out.println("===================================================================");
+		System.out.println("                        EXAMPLE 3 : Rideshare 2");
+		System.out.println("===================================================================");
+		System.out.println("Here is our max utility path algorithm running a randomized\n"
+						 + "rideshare example in which a driver has to visit 5 locations.\n"
+						 + "A ride-share driver must reach five locations.");
+		System.out.println("===================================================================");
+		System.out.println();
+		
+		// Builds the rideshare tree.
+		rideShareTree = buildRideShareTree(4, 2, -5, 5, 1); 
+		
+		// Finds the max utility path and the time.
+		start = System.nanoTime();
+		path = MaxUtilityPath.findMaxUtilityPath(rideShareTree.getInitialState());
+		end = System.nanoTime();
+
+		
+		// Displays the path actions.
 		System.out.println("Actions taken by the first driver to maximize utility:");	
 		for (State state : path) {
 			state.getAction().Go();
@@ -65,9 +97,9 @@ public class main {
 		System.out.format("This was computed on average in %d nanoseconds.\n\n", end-start);
 	}
 	
-	public static RideShare buildRideShareTree () {
+	public static RideShare buildRideShareTree (int locationNum, int numUtil, int lower, int upper, int seed) {
 		// Creates a RideShare object that has 3 possible locations, with 3 utility assigned to each location.
-		RideShare rideShare = new RideShare(3, 3, 0, 10);
+		RideShare rideShare = new RideShare(locationNum, numUtil, lower, upper, seed);
 		
 		System.out.println("Possible paths for the driver:\n" + rideShare);
 		

@@ -68,7 +68,7 @@ public class RideShare {
 		
 		this.utilLowerBound = lower;
 		this.utilUpperBound = upper;	
-		initialState = new State("Initial State", new StringAction("Initial Location"), new int [] {0});  
+		initialState = new State("Initial State", new StringAction("Start at initial location"), new int [] {0});  
 		generateRideShareUtilityTree();
 	}
 

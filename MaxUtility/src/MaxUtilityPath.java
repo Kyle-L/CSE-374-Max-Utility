@@ -55,7 +55,7 @@ public class MaxUtilityPath{
 	 */
 	private static void initialize(State root, Set<State> set) {
 		for (State state : set) {
-			state.setExpectedUtility(-1000);
+			state.setExpectedUtility(Integer.MIN_VALUE);
 			state.setParent(null);
 		}
 		root.setExpectedUtility(0);
