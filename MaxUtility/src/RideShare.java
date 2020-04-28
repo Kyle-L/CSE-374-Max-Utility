@@ -9,6 +9,9 @@ import javax.tools.DocumentationTool.Location;
  */
 public class RideShare {
 	
+	// Counts the number of states;
+	int stateCounter;
+	
 	// Generate's the random numbers used in the utility arrays.
 	private Random randomGenerator;
 	
@@ -54,6 +57,7 @@ public class RideShare {
 		randomGenerator = new Random();
 		randomGenerator.setSeed(seed);
 		
+		this.stateCounter = 1;
 		this.locationNumber = locationNum;
 		this.utilNumber = numUtil;
 		
@@ -109,7 +113,7 @@ public class RideShare {
 		// Makes a copy of remaining (excluding the previous state) 
 		ArrayList<State> updatedRemaining = new ArrayList<State>();
 		for(State s : remaining) {
-			if(s.getStateName().equals(parentState.getStateName()))
+			if(s.getAction().equals(parentState.getAction()))
 				continue;
 			updatedRemaining.add(s);
 		}
@@ -121,6 +125,8 @@ public class RideShare {
 			State childState = new State(updatedRemaining.get(i), values);
 			childState.setParent(parentState);
 			parentState.addChild(childState);
+			childState.setStateName("State " + stateCounter);
+			stateCounter++;
 			
 			// Recursively sets child and parent states
 			generateRideShareUtilityTree(updatedRemaining, childState);
@@ -136,7 +142,8 @@ public class RideShare {
 		State randomState = null; 
 
 		for(int i = 1; i <= locationNumber; i++) {
-			randomState = new State("Location "+i, new StringAction("Travel to location "+i), generateUtilArray()); 
+			randomState = new State("State " + stateCounter, new StringAction("Travel to location "+ i), generateUtilArray()); 
+			stateCounter++;
 			locations.add(randomState);
 		}
 
@@ -170,7 +177,6 @@ public class RideShare {
 		return tree;
 	}
 	
-	
 	public void stringBuilder(State current, String path) {
 		
 		if(current.isLeaf()) {
@@ -182,10 +188,10 @@ public class RideShare {
 		
 		for(int i = 0; i < current.getChildren().size(); i++) {
 			child = current.getChildren().get(i);
-			String info = "["+child.getStateName()+"|Utility Sum: "+child.getUtilitySum()+"]";
+			String info = "[" + child.getStateName() + " | Action: " + child.getAction().toString() + " | Utility Sum: "+ child.getUtilitySum()+"]";
 			
 			if(!child.isLeaf())
-				info += "--->";
+				info += "-->";
 			
 			stringBuilder(child, new String(path+info));	
 		}

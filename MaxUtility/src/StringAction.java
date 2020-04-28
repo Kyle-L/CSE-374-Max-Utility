@@ -14,14 +14,7 @@ public class StringAction implements Action{
 	public StringAction(String actionString) {
 		actionStr = actionString;
 	}
-	
-	/**
-	 * Returns the actionString.
-	 * @return
-	 */
-	public String getActionStr() {
-		return actionStr;
-	}
+
 
 	/**
 	 * Sets the actionString.
@@ -34,6 +27,11 @@ public class StringAction implements Action{
 	@Override
 	public void Go() {
 		System.out.println(actionStr);
+	}
+	
+	@Override
+	public String toString() {
+		return actionStr;
 	}
 	
 }
