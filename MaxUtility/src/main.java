@@ -19,7 +19,7 @@ public class main {
 		System.out.println("===================================================================");
 		System.out.println("                        EXAMPLE 1 : Table 2");
 		System.out.println("===================================================================");
-		System.out.println("Here is our max utility path algorithm running on the \nexample provided "
+		System.out.println("Here is our max utility path algorithm running on the \nexample provided"
 						 + " in table 2 of our paper.");
 		System.out.println("===================================================================");
 		System.out.println();
@@ -48,13 +48,13 @@ public class main {
 		System.out.println("                        EXAMPLE 2 : Rideshare");
 		System.out.println("===================================================================");
 		System.out.println("Here is our max utility path algorithm running a randomized\n"
-						 + "rideshare example in which a driver has to visit 2 locations.\n"
-						 + "A ride-share driver must reach two locations.");
+						 + "rideshare example in which a driver has to visit 3 locations.\n"
+						 + "A ride-share driver must reach three locations.");
 		System.out.println("===================================================================");
 		System.out.println();
 		
 		// Builds the rideshare tree.
-		RideShare rideShareTree = buildRideShareTree(2, 2, 0, 10, 1); 
+		RideShare rideShareTree = buildRideShareTree(3, 2, 0, 10, 1); 
 		
 		// Finds the max utility path and the time.
 		start = System.nanoTime();
@@ -78,13 +78,13 @@ public class main {
 		System.out.println("                        EXAMPLE 3 : Rideshare 2");
 		System.out.println("===================================================================");
 		System.out.println("Here is our max utility path algorithm running a randomized\n"
-						 + "rideshare example in which a driver has to visit 3 locations.\n"
-						 + "A ride-share driver must reach three locations.");
+						 + "rideshare example in which a driver has to visit 4 locations.\n"
+						 + "A ride-share driver must reach four locations.");
 		System.out.println("===================================================================");
 		System.out.println();
 		
 		// Builds the rideshare tree.
-		rideShareTree = buildRideShareTree(3, 2, -5, 5, 1); 
+		rideShareTree = buildRideShareTree(4, 2, -5, 5, 1); 
 		
 		// Finds the max utility path and the time.
 		start = System.nanoTime();
