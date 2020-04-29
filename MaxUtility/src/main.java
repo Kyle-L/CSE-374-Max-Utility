@@ -48,8 +48,8 @@ public class main {
 		System.out.println("                        EXAMPLE 2 : Rideshare");
 		System.out.println("===================================================================");
 		System.out.println("Here is our max utility path algorithm running a randomized\n"
-						 + "rideshare example in which a driver has to visit 3 locations.\n"
-						 + "A ride-share driver must reach three locations.");
+						 + "rideshare example in which a driver has to visit 2 locations.\n"
+						 + "A ride-share driver must reach two locations.");
 		System.out.println("===================================================================");
 		System.out.println();
 		
@@ -63,7 +63,7 @@ public class main {
 
 		
 		// Displays the path actions.
-		System.out.println("Actions taken by the first driver to maximize utility:");	
+		System.out.println("Actions taken by the driver to maximize utility:");	
 		for (State state : path) {
 			state.getAction().Go();
 		}
@@ -78,13 +78,13 @@ public class main {
 		System.out.println("                        EXAMPLE 3 : Rideshare 2");
 		System.out.println("===================================================================");
 		System.out.println("Here is our max utility path algorithm running a randomized\n"
-						 + "rideshare example in which a driver has to visit 5 locations.\n"
-						 + "A ride-share driver must reach five locations.");
+						 + "rideshare example in which a driver has to visit 3 locations.\n"
+						 + "A ride-share driver must reach three locations.");
 		System.out.println("===================================================================");
 		System.out.println();
 		
 		// Builds the rideshare tree.
-		rideShareTree = buildRideShareTree(4, 2, -5, 5, 1); 
+		rideShareTree = buildRideShareTree(3, 2, -5, 5, 1); 
 		
 		// Finds the max utility path and the time.
 		start = System.nanoTime();
@@ -93,7 +93,7 @@ public class main {
 
 		
 		// Displays the path actions.
-		System.out.println("Actions taken by the first driver to maximize utility:");	
+		System.out.println("Actions taken by the driver to maximize utility:");	
 		for (State state : path) {
 			state.getAction().Go();
 		}
