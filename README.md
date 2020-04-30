@@ -8,6 +8,7 @@
 <a name="overview"/></a>
 ## Overview
 This is the repository for the development of an algorithm that can be apply utility maximization to a simple state machine based artificially intelligent agent.
+This algorithm was designed for [CSE 374](https://www.miamioh.edu/cec/academics/departments/cse/academics/course-descriptions/cse-374/index.html) at [Miami University](https://miamioh.edu) by Matthew Coe, Souyma Mitra, and Kyle Lierer.
 
 <a name="paper"/></a>
 ## Paper
